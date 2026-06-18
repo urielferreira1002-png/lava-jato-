@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lavagem Simples | Lava Jato Express</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+  <a href="index.html" class="logo">
+    <img src="lava jato express.png" alt="Logo">
+    <span>Lava Jato Express</span>
+  </a>
+  <nav id="menu">
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="index.html#contato">Contato</a>
+    <a href="index.html#agendamento" class="btn" style="padding:10px 22px;font-size:0.82rem;">Agendar</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Início</a>
+  <a href="sobre.html">Sobre</a>
+  <a href="index.html#servicos">Serviços</a>
+  <a href="index.html#agendamento">Agendar</a>
+  <a href="index.html#contato">Contato</a>
+</nav>
+
+<section class="hero-higienizacao">
+  <div class="hero-badge">Serviço Essencial</div>
+  <h1> Lavagem Simples</h1>
+  <p>Limpeza externa prática e eficiente para manter seu veículo limpo no dia a dia com qualidade profissional.</p>
+</section>
+
+<section class="detalhes-servico">
+  <span class="section-label">O que está incluso</span>
+  <h2>Tudo que você recebe</h2>
+  <div class="cards">
+    <div class="card">
+      <h3> Lavagem Externa</h3>
+      <p>Remoção de sujeiras da lataria com shampoo automotivo profissional e água pressurizada.</p>
+    </div>
+    <div class="card">
+      <h3> Enxágue Completo</h3>
+      <p>Enxágue cuidadoso para não danificar a pintura do veículo.</p>
+    </div>
+    <div class="card">
+      <h3> Secagem Manual</h3>
+      <p>Secagem manual com pano macio para evitar manchas e riscos na pintura.</p>
+    </div>
+    <div class="card">
+      <h3> Vidros</h3>
+      <p>Limpeza básica dos vidros externos para melhor visibilidade.</p>
+    </div>
+  </div>
+</section>
+
+<section class="galeria">
+  <span class="section-label">Resultado</span>
+  <h2>Resultado do Serviço</h2>
+  <div class="galeria-grid">
+    <div class="foto">
+      <img src="higienização-automotiva-a-seco.webp" alt="Lavagem carro">
+      <h3>Brilho na Lataria</h3>
+    </div>
+    <div class="foto">
+      <img src="BYD.webp" alt="Carro limpo">
+      <h3>Visual Renovado</h3>
+    </div>
+    <div class="foto">
+      <img src="carrolimpo.webp" alt="Carro lavado">
+      <h3>Acabamento Profissional</h3>
+    </div>
+  </div>
+</section>
+
+<section class="preco-servico">
+  <h2>Valor do Serviço</h2>
+  <div class="card">
+    <h3>Lavagem Simples</h3>
+    <p>Limpeza externa completa com qualidade profissional.</p>
+    <h1>R$ 30,00</h1>
+    <a href="index.html#agendamento" class="btn">Agendar Agora →</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Lava Jato Express — Todos os direitos reservados</p>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const header = document.querySelector('header');
+  if(!toggle) return;
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('active');
+    overlay.classList.toggle('active', open);
+    toggle.textContent = open ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', function(){
+    nav.classList.remove('active');
+    overlay.classList.remove('active');
+    toggle.textContent = '☰';
+  });
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 20) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+})();
+</script>
+</body>
+</html>

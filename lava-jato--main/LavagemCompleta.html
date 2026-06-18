@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lavagem Completa | Lava Jato Express</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+  <a href="index.html" class="logo">
+    <img src="lava jato express.png" alt="Logo">
+    <span>Lava Jato Express</span>
+  </a>
+  <nav id="menu">
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="index.html#contato">Contato</a>
+    <a href="index.html#agendamento" class="btn" style="padding:10px 22px;font-size:0.82rem;">Agendar</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Início</a>
+  <a href="sobre.html">Sobre</a>
+  <a href="index.html#servicos">Serviços</a>
+  <a href="index.html#agendamento">Agendar</a>
+  <a href="index.html#contato">Contato</a>
+</nav>
+
+<section class="hero-servico">
+  <div class="hero-badge">Serviço Completo</div>
+  <h1> Lavagem Completa</h1>
+  <p>Seu veículo limpo por dentro e por fora com acabamento profissional.</p>
+</section>
+
+<section class="detalhes-servico">
+  <span class="section-label">O que está incluso</span>
+  <h2>Tudo que você recebe</h2>
+  <div class="cards">
+    <div class="card">
+      <h3> Lavagem Externa</h3>
+      <p>Limpeza completa da lataria, rodas, pneus e vidros com produtos profissionais.</p>
+    </div>
+    <div class="card">
+      <h3> Limpeza Interna</h3>
+      <p>Aspiração dos bancos, carpetes, painel e acabamento interno com atenção aos detalhes.</p>
+    </div>
+    <div class="card">
+      <h3> Acabamento Premium</h3>
+      <p>Aplicação de produtos que deixam o veículo com brilho duradouro e proteção extra.</p>
+    </div>
+  </div>
+</section>
+
+<section class="galeria">
+  <span class="section-label">Resultado</span>
+  <h2>Galeria do Serviço</h2>
+  <div class="galeria-grid">
+    <div class="foto">
+      <img src="por fora.webp" alt="Lavagem Completa">
+      <h3>Lavagem Completa</h3>
+    </div>
+    <div class="foto">
+      <img src="Acabamento Profissional.webp" alt="Acabamento">
+      <h3>Acabamento Profissional</h3>
+    </div>
+    <div class="foto">
+      <img src="Resultado Final.webp" alt="Resultado Final">
+      <h3>Resultado Final</h3>
+    </div>
+  </div>
+</section>
+
+<section class="preco-servico">
+  <h2>Valor do Serviço</h2>
+  <div class="card">
+    <h3>Lavagem Completa</h3>
+    <p>Limpeza interna e externa completa com acabamento profissional.</p>
+    <h1>R$ 60,00</h1>
+    <a href="index.html#agendamento" class="btn">Agendar Agora →</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Lava Jato Express — Todos os direitos reservados</p>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const header = document.querySelector('header');
+  if(!toggle) return;
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('active');
+    overlay.classList.toggle('active', open);
+    toggle.textContent = open ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', function(){
+    nav.classList.remove('active');
+    overlay.classList.remove('active');
+    toggle.textContent = '☰';
+  });
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 20) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+})();
+</script>
+</body>
+</html>

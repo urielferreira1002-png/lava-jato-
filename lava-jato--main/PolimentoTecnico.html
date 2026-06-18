@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polimento Técnico | Lava Jato Express</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+  <a href="index.html" class="logo">
+    <img src="lava jato express.png" alt="Logo">
+    <span>Lava Jato Express</span>
+  </a>
+  <nav id="menu">
+    <a href="index.html">Início</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="index.html#contato">Contato</a>
+    <a href="index.html#agendamento" class="btn" style="padding:10px 22px;font-size:0.82rem;">Agendar</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Início</a>
+  <a href="sobre.html">Sobre</a>
+  <a href="index.html#servicos">Serviços</a>
+  <a href="index.html#agendamento">Agendar</a>
+  <a href="index.html#contato">Contato</a>
+</nav>
+
+<section class="hero-polimento">
+  <div class="hero-badge">Serviço Premium</div>
+  <h1> Polimento Técnico</h1>
+  <p>Recupere o brilho original da pintura do seu veículo com acabamento profissional.</p>
+</section>
+
+<section class="detalhes-servico">
+  <span class="section-label">Benefícios</span>
+  <h2>Por que fazer polimento?</h2>
+  <div class="cards">
+    <div class="card">
+      <h3> Mais Brilho</h3>
+      <p>Realça a cor da pintura e devolve o aspecto de veículo zero km com resultado imediato.</p>
+    </div>
+    <div class="card">
+      <h3> Proteção Duradoura</h3>
+      <p>Ajuda a proteger a pintura contra sujeira, UV e desgaste do dia a dia.</p>
+    </div>
+    <div class="card">
+      <h3> Aparência Premium</h3>
+      <p>Remove marcas leves e oxidação, melhorando significativamente o visual do carro.</p>
+    </div>
+  </div>
+</section>
+
+<section class="galeria">
+  <span class="section-label">Resultado</span>
+  <h2>Resultado do Serviço</h2>
+  <div class="galeria-grid">
+    <div class="foto">
+      <img src="Brilho Profundo.webp" alt="Polimento">
+      <h3>Brilho Profundo</h3>
+    </div>
+    <div class="foto">
+      <img src="bm.jpg" alt="Carro Polido">
+      <h3>Acabamento Premium</h3>
+    </div>
+    <div class="foto">
+      <img src="Pintura Renovada.webp" alt="Pintura">
+      <h3>Pintura Renovada</h3>
+    </div>
+  </div>
+</section>
+
+<section class="preco-servico">
+  <h2>Valor do Serviço</h2>
+  <div class="card">
+    <h3>Polimento Técnico</h3>
+    <p>Correção visual, brilho intenso e proteção da pintura.</p>
+    <h1>R$ 250,00</h1>
+    <a href="index.html#agendamento" class="btn">Agendar Agora →</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Lava Jato Express — Todos os direitos reservados</p>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const header = document.querySelector('header');
+  if(!toggle) return;
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('active');
+    overlay.classList.toggle('active', open);
+    toggle.textContent = open ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', function(){
+    nav.classList.remove('active');
+    overlay.classList.remove('active');
+    toggle.textContent = '☰';
+  });
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 20) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+})();
+</script>
+</body>
+</html>

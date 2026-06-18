@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Resultados | Lava Jato Express</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+:root{
+    --preto:#080808;
+    --card:#111111;
+    --dourado:#C8A97E;
+    --bege:#E8DCC4;
+}
+
+body{
+    background:var(--preto);
+    color:white;
+}
+
+header{
+    padding:25px;
+    text-align:center;
+    border-bottom:1px solid rgba(200,169,126,.2);
+}
+
+header h1{
+    color:var(--dourado);
+}
+
+.hero{
+    text-align:center;
+    padding:70px 20px;
+}
+
+.hero h2{
+    font-size:2.5rem;
+    margin-bottom:15px;
+}
+
+.hero p{
+    max-width:800px;
+    margin:auto;
+    color:#bdbdbd;
+    line-height:1.7;
+}
+
+.galeria{
+    max-width:1400px;
+    margin:auto;
+    padding:40px 20px 80px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:var(--card);
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(200,169,126,.15);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:var(--dourado);
+}
+
+.card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    display:block;
+}
+
+.info{
+    padding:18px;
+}
+
+.info h3{
+    color:var(--dourado);
+    margin-bottom:8px;
+}
+
+.info p{
+    color:#aaa;
+}
+
+.sem-fotos{
+    text-align:center;
+    padding:80px 20px;
+    display:none;
+}
+
+.sem-fotos h2{
+    color:var(--dourado);
+    margin-bottom:10px;
+}
+
+.btn-voltar{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 25px;
+    background:var(--dourado);
+    color:black;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:700;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    border-top:1px solid rgba(200,169,126,.15);
+    color:#888;
+}
+
+@media(max-width:768px){
+
+    .hero h2{
+        font-size:2rem;
+    }
+
+    .galeria{
+        grid-template-columns:1fr;
+    }
+
+    .card img{
+        height:240px;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🚗 Lava Jato Express</h1>
+</header>
+
+<section class="hero">
+    <h2>Nossos Resultados</h2>
+
+    <p>
+        Confira alguns dos veículos atendidos pela nossa equipe.
+        Todas as fotos exibidas abaixo são adicionadas diretamente
+        pelo painel administrativo da Lava Jato Express.
+    </p>
+</section>
+
+<div class="sem-fotos" id="semFotos">
+    <h2>📸 Nenhuma foto cadastrada</h2>
+    <p>As fotos adicionadas no painel administrativo aparecerão aqui.</p>
+
+    <a href="index.html" class="btn-voltar">
+        Voltar ao Site
+    </a>
+</div>
+
+<div class="galeria" id="galeria"></div>
+
+<footer>
+    © Lava Jato Express - Todos os direitos reservados
+</footer>
+
+<script>
+
+const galeriaDiv = document.getElementById("galeria");
+const semFotos = document.getElementById("semFotos");
+
+const fotos =
+JSON.parse(localStorage.getItem("galeria")) || [];
+
+if(fotos.length === 0){
+
+    semFotos.style.display = "block";
+
+}else{
+
+    fotos.forEach((foto,index)=>{
+
+        galeriaDiv.innerHTML += `
+            <div class="card">
+                <img src="${foto}" alt="Resultado ${index+1}">
+
+                <div class="info">
+                    <h3>Resultado ${index+1}</h3>
+                    <p>Serviço realizado pela equipe Lava Jato Express.</p>
+                </div>
+            </div>
+        `;
+    });
+
+}
+</script>
+
+</body>
+</html>

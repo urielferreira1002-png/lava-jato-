@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lava Jato Express — Rápido, Prático e Eficiente</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#C8A97E">
+    <style>
+        #mapaAgendamento { height: 250px; border-radius: 10px; margin: 12px 0; border: 1px solid var(--border); z-index: 1; }
+        .resumo-valores { background: var(--bg2); padding: 15px; border-radius: 10px; border: 1px solid var(--border); margin: 15px 0; }
+        .resumo-item { display: flex; justify-content: space-between; margin-bottom: 8px; color: #aaa; font-size: 0.95rem; }
+        .resumo-item.total { border-top: 1px solid var(--border); padding-top: 8px; color: var(--white); font-weight: bold; font-size: 1.1rem; }
+        .btn-rota-maps { width: 100%; padding: 10px; background: #4285F4; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+  <a href="#inicio" class="logo">
+    <img src="lava jato express.png" alt="Logo" style="height:40px; vertical-align:middle; margin-right:8px;">
+    <span>Lava Jato Express</span>
+  </a>
+  <nav id="menu">
+    <a href="#servicos">Serviços</a>
+    <a href="#galeria">Galeria</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="#avaliacoes">Avaliações</a>
+    <a href="#agendamento">Agendar</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#servicos">Serviços</a>
+  <a href="#galeria">Galeria</a>
+  <a href="sobre.html">Sobre</a>
+  <a href="#avaliacoes">Avaliações</a>
+  <a href="#agendamento">Agendar</a>
+  <a href="#contato">Contato</a>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-badge">Atendimento Domiciliar — BH</div>
+  <h1>Seu Carro<br><span>Impecável</span></h1>
+  <p>Qualidade, rapidez e cuidado profissional na porta da sua casa. Levamos toda a estrutura até você.</p>
+  <a href="#agendamento" class="btn">Agendar Agora →</a>
+</section>
+
+<section class="promocoes" id="promocoes">
+    <span class="section-label">Ofertas Especiais</span>
+    <h2>Promoções da Semana</h2>
+    <div class="cards">
+        <div class="card">
+            <h3>Primeira Lavagem</h3>
+            <p>Clientes novos ganham <strong>10% de desconto</strong> na primeira lavagem.</p>
+            <span class="preco">10% OFF</span>
+        </div>
+        <div class="card">
+            <h3>Lavagem Completa + Cera</h3>
+            <p>Contrate uma lavagem completa e receba aplicação de cera com valor especial.</p>
+            <span class="preco">Oferta Limitada</span>
+        </div>
+        <div class="card">
+            <h3>Indique um Amigo</h3>
+            <p>Indicou um cliente? Ganhe desconto no próximo serviço realizado.</p>
+            <span class="preco">Benefício Exclusivo</span>
+        </div>
+    </div>
+</section>
+
+<section class="galeria" id="galeria">
+  <span class="section-label">Serviços em destaque</span>
+  <h2>Nossos Serviços Premium</h2>
+  <div class="galeria-grid">
+    <div class="foto"><img src="OIP.webp" alt="Lavagem Completa"><h3>Lavagem Completa</h3></div>
+    <div class="foto"><img src="polimento.webp" alt="Polimento Técnico"><h3>Polimento Técnico</h3></div>
+    <div class="foto"><img src="simples.jpg" alt="Lavagem Simples"><h3>Lavagem Simples</h3></div>
+    <div class="foto"><img src="baixados.webp" alt="Higienização Interna"><h3>Higienização Interna</h3></div>
+  </div>
+  
+  <h2 style="margin-top: 40px;">Transformações Recentes</h2>
+  <div id="galeriaPublica"></div>
+</section>
+
+<section class="agendamento" id="agendamento">
+  <span class="section-label">Marque o seu</span>
+  <h2>Agende Seu Horário</h2>
+  <form id="formAgendamento" novalidate>
+    <input type="text" id="nome" placeholder="Seu Nome Completo" required>
+    <input type="tel" id="telefone" placeholder="WhatsApp (ex: 31912345678)" required>
+    <input type="text" id="veiculo" placeholder="Veículo (ex: Gol 1.6 2018)" required>
+    <input type="text" id="placa" placeholder="Placa do Veículo (ex: ABC1D23)" required maxlength="8">
+    
+    <select id="servico" required>
+      <option value="">Escolha um Serviço</option>
+      <option value="Lavagem Simples">Lavagem Simples — R$ 30,00</option>
+      <option value="Lavagem Completa">Lavagem Completa — R$ 60,00</option>
+      <option value="Higienização">Higienização — R$ 120,00</option>
+      <option value="Polimento">Polimento — R$ 250,00</option>
+    </select>
+    
+    <input type="date" id="data" required>
+    
+    <select id="hora" required>
+      <option value="">Escolha um Horário</option>
+      <option value="08:00">08:00</option>
+      <option value="09:00">09:00</option>
+      <option value="10:00">10:00</option>
+      <option value="11:00">11:00</option>
+      <option value="12:00">12:00</option>
+      <option value="13:00">13:00</option>
+      <option value="14:00">14:00</option>
+      <option value="15:00">15:00</option>
+      <option value="16:00">16:00</option>
+      <option value="17:00">17:00</option>
+    </select>
+
+    <div class="bloco-endereco">
+      <div class="bloco-endereco-titulo" style="font-weight: bold; margin-bottom: 10px;">📍 Endereço de Atendimento</div>
+      <button type="button" class="btn-gps" id="btnUsarGps" style="width:100%; padding:12px; margin-bottom:10px; background:var(--border); color:white; border:none; border-radius:8px; cursor:pointer;">📡 Usar minha localização</button>
+
+      <input type="text" id="cep" placeholder="CEP (ex: 30130-000)" maxlength="9" style="margin-bottom:10px;width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--white);">
+      <input type="text" id="bairro" placeholder="Bairro" required style="margin-bottom:10px;width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--white);">
+      <input type="text" id="rua" placeholder="Rua" required style="margin-bottom:10px;width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--white);">
+      <input type="text" id="numero" placeholder="Número" required style="margin-bottom:14px;width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;color:var(--white);">
+
+      <div id="statusEndereco" style="color: #C8A97E; font-size:0.85rem;"></div>
+      <div id="mapaAgendamento"></div>
+
+      <div class="resumo-valores">
+        <div class="resumo-item"><div>Distância</div><div id="resumoDistancia">—</div></div>
+        <div class="resumo-item"><div>Chegada estimada</div><div id="resumoTempo">—</div></div>
+        <div class="resumo-item"><div>Frete</div><div id="resumoFrete">R$ 0,00</div></div>
+        <div class="resumo-item"><div>Serviço</div><div id="resumoServico">R$ 0,00</div></div>
+        <div class="resumo-item total"><div>Total</div><div id="resumoTotal">R$ 0,00</div></div>
+      </div>
+
+      <button type="button" class="btn-rota-maps" id="btnAbrirRota">🗺️ Abrir rota no Google Maps</button>
+    </div>
+
+    <button type="submit" id="btnConfirmarAgendamento" style="width:100%; padding:16px; background:#25D366; color:white; font-size:1.1rem; font-weight:bold; border:none; border-radius:10px; cursor:pointer; margin-top:15px;">
+        Confirmar Agendamento via WhatsApp
+    </button>
+  </form>
+  <div id="msgSucesso" style="display:none; color:#25D366; font-weight:bold; margin-top:10px;">✅ Agendamento registrado com sucesso!</div>
+</section>
+
+<section class="contato" id="contato">
+  <h2>Contato</h2>
+  <p>📞 (31) 9148-6870</p>
+  <p>📍 Belo Horizonte — MG</p>
+</section>
+
+<footer>
+  <p>© 2026 Lava Jato Express — Todos os direitos reservados</p>
+</footer>
+
+<a href="admin.html" style="position:fixed; bottom:20px; right:20px; background:#C8A97E; color:black; padding:12px 20px; border-radius:30px; text-decoration:none; font-weight:bold; z-index:999;">🔐 Painel ADM</a>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="script.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js').catch(err => console.error(err));
+    }
+</script>
+</body>
+</html>

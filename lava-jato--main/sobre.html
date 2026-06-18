@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre Nós | Lava Jato Express</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="btn-voltar">← Voltar</a>
+  <a href="index.html" class="logo">
+    <img src="lava jato express.png" alt="Logo">
+    <span>Lava Jato Express</span>
+  </a>
+  <nav id="menu">
+    <a href="index.html">Início</a>
+    <a href="index.html#servicos">Serviços</a>
+    <a href="index.html#contato">Contato</a>
+    <a href="index.html#agendamento" class="btn" style="padding:10px 22px;font-size:0.82rem;">Agendar</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Início</a>
+  <a href="index.html#servicos">Serviços</a>
+  <a href="index.html#agendamento">Agendar</a>
+  <a href="index.html#contato">Contato</a>
+</nav>
+
+<section class="hero-sobre">
+  <div class="hero-badge">📍 Atendimento exclusivo em BH</div>
+  <h1>Sobre o Lava Jato Express</h1>
+  <p>Qualidade, confiança e cuidado profissional para o seu veículo em Belo Horizonte.</p>
+</section>
+
+<section class="atendimento-bh">
+  <div class="card">
+    <h2>📍 Atendimento Exclusivo em BH</h2>
+    <p>O Lava Jato Express atende exclusivamente em <strong>Belo Horizonte — MG</strong>.</p>
+    <p>Isso garante mais organização, rapidez e qualidade em todos os serviços prestados.</p>
+    <p>Levamos nosso atendimento até você dentro da cidade, com comodidade sem perder o padrão profissional.</p>
+  </div>
+</section>
+
+<section class="sobre-empresa">
+  <div class="sobre-texto">
+    <h2>Nossa História</h2>
+    <p>O Lava Jato Express nasceu com o objetivo de oferecer serviços automotivos de alta qualidade, combinando rapidez, profissionalismo e atenção aos mínimos detalhes.</p>
+    <p>Trabalhamos com produtos de qualidade profissional e técnicas modernas para garantir um resultado impecável em cada veículo atendido.</p>
+    <p>Nosso foco é entregar praticidade e excelência no atendimento domiciliar dentro de Belo Horizonte, poupando o seu tempo sem abrir mão do resultado.</p>
+  </div>
+</section>
+
+<section class="valores">
+  <span class="section-label">O que nos move</span>
+  <h2>Nossos Valores</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>⭐ Qualidade</h3>
+      <p>Buscamos sempre a excelência em cada serviço realizado, sem atalhos.</p>
+    </div>
+    <div class="card">
+      <h3>🤝 Confiança</h3>
+      <p>Transparência e respeito com todos os clientes — do orçamento à entrega.</p>
+    </div>
+    <div class="card">
+      <h3>🚗 Cuidado</h3>
+      <p>Tratamos cada veículo como se fosse nosso, com atenção a cada detalhe.</p>
+    </div>
+  </div>
+</section>
+
+<section class="numeros">
+  <h2>Nossos Resultados</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>50+</h3>
+      <p>Veículos Atendidos</p>
+    </div>
+    <div class="card">
+      <h3>98%</h3>
+      <p>Satisfação dos Clientes</p>
+    </div>
+    <div class="card">
+      <h3>100%</h3>
+      <p>Compromisso e Dedicação</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Lava Jato Express — Todos os direitos reservados</p>
+</footer>
+
+<script>
+(function(){
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const header = document.querySelector('header');
+  if(!toggle) return;
+  toggle.addEventListener('click', function(){
+    const open = nav.classList.toggle('active');
+    overlay.classList.toggle('active', open);
+    toggle.textContent = open ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', function(){
+    nav.classList.remove('active');
+    overlay.classList.remove('active');
+    toggle.textContent = '☰';
+  });
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 20) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+})();
+</script>
+</body>
+</html>

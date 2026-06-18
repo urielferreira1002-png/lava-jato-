@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Painel ADM</title>
+<style>
+   
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#080808;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url("lava_jato_express.png") center no-repeat;
+    background-size:600px;
+    opacity:.04;
+    pointer-events:none;
+}
+
+.login-box{
+    background:#111;
+    padding:50px 40px;
+    border-radius:20px;
+    width:380px;
+    max-width:90vw;
+    border-top:4px solid #C8A97E;
+    box-shadow:0 0 40px rgba(0,0,0,.6);
+    position:relative;
+    z-index:1;
+}
+
+.logo-wrap{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo-wrap img{
+    width:100px;
+    opacity:.9;
+}
+
+.logo-wrap h2{
+    color:#C8A97E;
+    font-size:22px;
+    margin-top:12px;
+    letter-spacing:1px;
+}
+
+.logo-wrap p{
+    color:#888;
+    font-size:13px;
+    margin-top:5px;
+}
+
+label{
+    display:block;
+    color:#E8DCC4;
+    font-size:13px;
+    margin-bottom:6px;
+    margin-top:18px;
+    letter-spacing:.5px;
+}
+
+input{
+    width:100%;
+    padding:14px 16px;
+    background:#1a1a1a;
+    border:1px solid rgba(200,169,126,.25);
+    border-radius:10px;
+    color:#E8DCC4;
+    font-size:15px;
+    outline:none;
+    transition:.2s;
+}
+
+input:focus{
+    border-color:#C8A97E;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:25px;
+    background:#C8A97E;
+    color:#000;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:700;
+    transition:.3s;
+    letter-spacing:.5px;
+}
+
+button:hover{
+    background:#E8DCC4;
+    transform:translateY(-2px);
+}
+
+.erro{
+    color:#ff6b6b;
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+    min-height:20px;
+}
+
+.voltar{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+    font-size:13px;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.voltar:hover{
+    color:#C8A97E;
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+    <div class="logo-wrap">
+        <img src="lava jato express.png" alt="Logo">
+        <h2>Painel Administrativo</h2>
+        <p>Acesso restrito</p>
+    </div>
+
+    <label for="usuario">Usuário</label>
+    <input type="text" id="usuario" placeholder="Digite seu usuário" autocomplete="username">
+
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter') login()">
+
+    <button onclick="login()">Entrar</button>
+
+    <div class="erro" id="erro"></div>
+
+    <a href="index.html" class="voltar">← Voltar ao site</a>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

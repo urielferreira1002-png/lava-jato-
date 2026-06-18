@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo — Lava Jato Express</title>
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+    --preto:#080808;
+    --card:#111111;
+    --dourado:#C8A97E;
+    --bege:#E8DCC4;
+    --vermelho:#ff6060;
+}
+
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:var(--preto);
+    color:var(--bege);
+    min-height:100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:240px;
+    background:#0d0d0d;
+    border-right:1px solid rgba(200,169,126,.12);
+    display:flex;
+    flex-direction:column;
+    padding:0;
+    position:fixed;
+    top:0; left:0;
+    height:100vh;
+    z-index:100;
+    transition:.3s;
+}
+
+.sidebar-logo{
+    padding:28px 20px 22px;
+    border-bottom:1px solid rgba(200,169,126,.1);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.sidebar-logo img{
+    width:40px;
+    height:40px;
+    object-fit:contain;
+    opacity:.9;
+}
+
+.sidebar-logo span{
+    color:var(--dourado);
+    font-size:15px;
+    font-weight:700;
+    line-height:1.3;
+}
+
+.sidebar-nav{
+    flex:1;
+    padding:20px 0;
+    overflow-y:auto;
+}
+
+.nav-label{
+    color:#444;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    padding:8px 20px 6px;
+}
+
+.nav-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 20px;
+    cursor:pointer;
+    color:#777;
+    font-size:14px;
+    font-weight:600;
+    border-left:3px solid transparent;
+    transition:.2s;
+    user-select:none;
+}
+
+.nav-item:hover{
+    color:var(--bege);
+    background:rgba(200,169,126,.05);
+}
+
+.nav-item.ativo{
+    color:var(--dourado);
+    background:rgba(200,169,126,.08);
+    border-left-color:var(--dourado);
+}
+
+.nav-item .icon{
+    font-size:18px;
+    min-width:22px;
+    text-align:center;
+}
+
+.sidebar-footer{
+    padding:20px;
+    border-top:1px solid rgba(200,169,126,.1);
+}
+
+.btn-logout{
+    width:100%;
+    background:transparent;
+    color:#666;
+    border:1px solid rgba(255,255,255,.08);
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    transition:.2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.btn-logout:hover{
+    background:rgba(255,80,80,.1);
+    color:var(--vermelho);
+    border-color:rgba(255,80,80,.2);
+}
+
+/* ===== MAIN ===== */
+.main{
+    margin-left:240px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+.topbar{
+    background:#0d0d0d;
+    border-bottom:1px solid rgba(200,169,126,.1);
+    padding:18px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.topbar-title{
+    color:var(--dourado);
+    font-size:20px;
+    font-weight:700;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.topbar-date{
+    color:#555;
+    font-size:13px;
+}
+
+.badge-online{
+    background:rgba(72,200,120,.12);
+    color:#48c878;
+    font-size:11px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+    border:1px solid rgba(72,200,120,.2);
+}
+
+/* ===== CONTEÚDO ===== */
+.content{
+    padding:32px;
+    flex:1;
+}
+
+.secao{ display:none; }
+.secao.ativa{ display:block; }
+
+/* ===== STATS ===== */
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:18px;
+    margin-bottom:36px;
+}
+
+.stat-box{
+    background:var(--card);
+    border-radius:14px;
+    padding:24px 20px;
+    border:1px solid rgba(200,169,126,.1);
+    position:relative;
+    overflow:hidden;
+}
+
+.stat-box::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:3px;
+    background:var(--dourado);
+    border-radius:14px 14px 0 0;
+}
+
+.stat-num{
+    color:var(--dourado);
+    font-size:36px;
+    font-weight:700;
+    line-height:1;
+    margin-bottom:8px;
+}
+
+.stat-label{
+    color:#555;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+/* ===== SEÇÃO HEADER ===== */
+.secao-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.secao-titulo{
+    color:var(--dourado);
+    font-size:20px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+/* ===== FILTROS ===== */
+.filtros{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.filtros input,
+.filtros select{
+    background:#161616;
+    color:var(--bege);
+    border:1px solid rgba(200,169,126,.15);
+    padding:10px 14px;
+    border-radius:8px;
+    font-size:13px;
+    outline:none;
+    transition:.2s;
+}
+
+.filtros input:focus,
+.filtros select:focus{
+    border-color:var(--dourado);
+}
+
+/* ===== CARDS ===== */
+.card-agendamento{
+    background:var(--card);
+    border:1px solid rgba(200,169,126,.1);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-bottom:12px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:16px;
+    align-items:center;
+    transition:.2s;
+}
+
+.card-agendamento:hover{
+    border-color:rgba(200,169,126,.25);
+    background:#141414;
+}
+
+.ag-info h3{
+    color:var(--dourado);
+    font-size:16px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.ag-chips{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+}
+
+.chip{
+    background:rgba(200,169,126,.08);
+    color:var(--dourado);
+    border:1px solid rgba(200,169,126,.15);
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.chip.chip-data{
+    background:rgba(100,160,255,.06);
+    color:#88aaff;
+    border-color:rgba(100,160,255,.15);
+}
+
+.chip.chip-hora{
+    background:rgba(80,220,140,.06);
+    color:#60cc90;
+    border-color:rgba(80,220,140,.15);
+}
+
+.ag-contato{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.ag-contato span{
+    color:#666;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.ag-acoes{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:flex-end;
+}
+
+.btn{
+    padding:8px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:700;
+    border:none;
+    transition:.2s;
+    white-space:nowrap;
+}
+
+.btn:hover{ transform:translateY(-1px); opacity:.9; }
+
+.btn-primario{
+    background:var(--dourado);
+    color:#000;
+}
+
+.btn-excluir{
+    background:rgba(255,60,60,.08);
+    color:var(--vermelho);
+    border:1px solid rgba(255,60,60,.15);
+}
+
+.btn-excluir:hover{
+    background:var(--vermelho);
+    color:#fff;
+    border-color:transparent;
+}
+
+/* ===== AGENDA DO DIA ===== */
+.agenda-vazia{
+    text-align:center;
+    padding:60px 20px;
+    color:#444;
+}
+
+.agenda-vazia .icon-big{ font-size:48px; margin-bottom:16px; }
+.agenda-vazia p{ font-size:15px; }
+
+.agenda-card{
+    background:var(--card);
+    border:1px solid rgba(200,169,126,.12);
+    border-radius:14px;
+    padding:20px 24px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    transition:.2s;
+}
+
+.agenda-card:hover{
+    border-color:rgba(200,169,126,.25);
+    background:#141414;
+}
+
+.agenda-hora{
+    background:rgba(200,169,126,.08);
+    border:2px solid rgba(200,169,126,.2);
+    color:var(--dourado);
+    font-size:20px;
+    font-weight:700;
+    min-width:72px;
+    text-align:center;
+    padding:10px 8px;
+    border-radius:12px;
+}
+
+.agenda-detalhe h3{
+    color:var(--bege);
+    font-size:16px;
+    margin-bottom:6px;
+}
+
+.agenda-meta{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.agenda-meta span{
+    color:#666;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.agenda-servico-badge{
+    background:rgba(200,169,126,.1);
+    color:var(--dourado);
+    border-radius:20px;
+    padding:3px 10px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+/* ===== FIDELIDADE ===== */
+.ranking-grid{
+    display:grid;
+    gap:12px;
+}
+
+.ranking-card{
+    background:var(--card);
+    border:1px solid rgba(200,169,126,.1);
+    border-radius:14px;
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    transition:.2s;
+}
+
+.ranking-card:hover{ border-color:rgba(200,169,126,.25); background:#141414; }
+
+.ranking-pos{
+    font-size:24px;
+    min-width:36px;
+    text-align:center;
+}
+
+.ranking-info{ flex:1; }
+.ranking-info strong{ color:var(--bege); font-size:15px; display:block; margin-bottom:4px; }
+.ranking-info p{ color:#555; font-size:13px; }
+
+.ranking-pontos{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:4px;
+}
+
+.pontos-num{
+    color:var(--dourado);
+    font-size:22px;
+    font-weight:700;
+}
+
+.pontos-label{ color:#444; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+
+.badge-gratis{
+    background:rgba(72,200,120,.1);
+    color:#48c878;
+    border:1px solid rgba(72,200,120,.2);
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.progresso-bar{
+    height:4px;
+    background:#1e1e1e;
+    border-radius:10px;
+    margin-top:8px;
+    overflow:hidden;
+}
+
+.progresso-fill{
+    height:100%;
+    background:var(--dourado);
+    border-radius:10px;
+    transition:.6s ease;
+}
+
+/* ===== GALERIA ===== */
+.upload-zone{
+    background:#0e0e0e;
+    border:2px dashed rgba(200,169,126,.2);
+    border-radius:14px;
+    padding:30px;
+    text-align:center;
+    margin-bottom:24px;
+    transition:.2s;
+}
+
+.upload-zone:hover{ border-color:rgba(200,169,126,.4); }
+
+.upload-zone p{ color:#555; font-size:14px; margin-bottom:14px; }
+
+.upload-zone input[type=file]{
+    display:none;
+}
+
+.btn-upload-label{
+    background:var(--dourado);
+    color:#000;
+    padding:10px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:700;
+    display:inline-block;
+    transition:.2s;
+}
+
+.btn-upload-label:hover{ opacity:.85; transform:translateY(-1px); }
+
+.galeria-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:16px;
+}
+
+.foto-card{
+    background:var(--card);
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid rgba(200,169,126,.1);
+    transition:.2s;
+    position:relative;
+}
+
+.foto-card:hover{ border-color:rgba(200,169,126,.3); transform:translateY(-3px); }
+
+.foto-card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    display:block;
+}
+
+.foto-card-footer{
+    padding:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.foto-num{ color:#555; font-size:12px; }
+
+.btn-excluir-foto{
+    background:rgba(255,60,60,.08);
+    color:var(--vermelho);
+    border:1px solid rgba(255,60,60,.15);
+    padding:5px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.btn-excluir-foto:hover{ background:var(--vermelho); color:#fff; }
+
+.galeria-vazia{
+    text-align:center;
+    padding:60px;
+    color:#444;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty{
+    text-align:center;
+    padding:60px 20px;
+    color:#444;
+    font-size:15px;
+}
+
+.empty .e-icon{ font-size:42px; margin-bottom:12px; }
+
+/* ===== MENU TOGGLE MOBILE ===== */
+.menu-toggle{
+    display:none;
+    position:fixed;
+    top:15px;
+    left:15px;
+    z-index:200;
+    background:var(--card);
+    border:1px solid rgba(200,169,126,.2);
+    color:var(--dourado);
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:20px;
+    align-items:center;
+    justify-content:center;
+}
+
+@media(max-width:768px){
+    .menu-toggle{ display:flex; }
+    .sidebar{
+        transform:translateX(-100%);
+    }
+    .sidebar.aberto{
+        transform:translateX(0);
+        box-shadow:4px 0 30px rgba(0,0,0,.8);
+    }
+    .main{
+        margin-left:0;
+    }
+    .topbar{
+        padding:15px 20px;
+    }
+    .content{
+        padding:20px;
+    }
+    .card-agendamento{
+        grid-template-columns:1fr;
+    }
+    .ag-acoes{
+        flex-direction:row;
+        align-items:center;
+    }
+}
+
+/* ===== OVERLAY MOBILE ===== */
+.sidebar-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    z-index:90;
+}
+.sidebar-overlay.visivel{ display:block; }
+</style>
+</head>
+<body>
+
+<!-- TOGGLE MOBILE -->
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="sidebar-overlay" id="overlay" onclick="fecharMenu()"></div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="lava jato express.png" alt="Logo" onerror="this.style.display='none'">
+            <span>Lava Jato<br>Express</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-label">Painel</div>
+            <div class="nav-item ativo" onclick="abrirTab('agenda')">
+                <span class="icon">📅</span> Agenda do Dia
+            </div>
+            <div class="nav-item" onclick="abrirTab('agendamentos')">
+                <span class="icon">📋</span> Agendamentos
+            </div>
+
+            <div class="nav-label" style="margin-top:16px">Clientes</div>
+            <div class="nav-item" onclick="abrirTab('fidelidade')">
+                <span class="icon">🏆</span> Fidelidade
+            </div>
+
+            <div class="nav-label" style="margin-top:16px">Conteúdo</div>
+            <div class="nav-item" onclick="abrirTab('galeria')">
+                <span class="icon">📸</span> Galeria
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()">🚪 Sair do Painel</button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            <div class="topbar-title" id="topbarTitulo">📅 Agenda do Dia</div>
+            <div class="topbar-right">
+                <span class="topbar-date" id="dataAtual"></span>
+                <span class="badge-online">● Online</span>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- STATS (aparecem em todas as abas) -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-num" id="totalClientes">0</div>
+                    <div class="stat-label">Clientes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="totalAgendamentos">0</div>
+                    <div class="stat-label">Agendamentos</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="faturamentoTotal">R$ 0</div>
+                    <div class="stat-label">Faturamento</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="ticketMedio">R$ 0</div>
+                    <div class="stat-label">Ticket Médio</div>
+                </div>
+            </div>
+
+            <!-- ABA: AGENDA DO DIA -->
+            <div class="secao ativa" id="tab-agenda">
+                <div class="secao-header">
+                    <div class="secao-titulo">📅 Agenda de Hoje</div>
+                    <span id="agendaCount" style="color:#555;font-size:13px;"></span>
+                </div>
+                <div id="agendaHoje"></div>
+            </div>
+
+            <!-- ABA: AGENDAMENTOS -->
+            <div class="secao" id="tab-agendamentos">
+                <div class="secao-header">
+                    <div class="secao-titulo">📋 Todos os Agendamentos</div>
+                </div>
+                <div class="filtros">
+                    <input type="text" id="filtroNome" placeholder="🔍 Buscar por nome ou placa..." oninput="renderAgendamentos()">
+                    <select id="filtroServico" onchange="renderAgendamentos()">
+                        <option value="">Todos os serviços</option>
+                        <option>Lavagem Simples</option>
+                        <option>Lavagem Completa</option>
+                        <option>Higienização</option>
+                        <option>Polimento</option>
+                    </select>
+                </div>
+                <div id="listaAgendamentos"></div>
+            </div>
+
+            <!-- ABA: FIDELIDADE -->
+            <div class="secao" id="tab-fidelidade">
+                <div class="secao-header">
+                    <div class="secao-titulo">🏆 Programa de Fidelidade</div>
+                </div>
+                <div id="rankingClientes"></div>
+            </div>
+
+            <!-- ABA: GALERIA -->
+            <div class="secao" id="tab-galeria">
+                <div class="secao-header">
+                    <div class="secao-titulo">📸 Galeria de Serviços</div>
+                    <label class="btn-upload-label" for="fotoUpload">➕ Adicionar Fotos</label>
+                </div>
+                <div class="upload-zone" id="uploadZone">
+                    <p>Arraste fotos aqui ou clique no botão acima para selecionar</p>
+                    <input type="file" id="fotoUpload" accept="image/*" multiple onchange="salvarFoto(this)">
+                </div>
+                <div id="galeriaAdmin"></div>
+            </div>
+
+        </div><!-- /content -->
+    </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ==============================
+   AUTH
+============================== */
+if(localStorage.getItem("logado") !== "sim"){
+    window.location.href = "login.html";
+}
+
+/* ==============================
+   DADOS
+============================== */
+let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+let galeria = JSON.parse(localStorage.getItem("galeria")) || [];
+
+/* ==============================
+   DATA ATUAL NA TOPBAR
+============================== */
+const hoje = new Date();
+const diasSemana = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+document.getElementById("dataAtual").textContent =
+    `${diasSemana[hoje.getDay()]}, ${hoje.toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"})}`;
+
+/* ==============================
+   STATS
+============================== */
+function calcularStats(){
+    const totalClientes = [...new Set(agendamentos.map(a=>a.telefone))].length;
+    document.getElementById("totalClientes").textContent = totalClientes;
+    document.getElementById("totalAgendamentos").textContent = agendamentos.length;
+
+    const fat = agendamentos.reduce((s,a)=>s+Number(a.valor||0),0);
+    document.getElementById("faturamentoTotal").textContent = `R$ ${fat.toFixed(2)}`;
+
+    const ticket = agendamentos.length > 0 ? fat/agendamentos.length : 0;
+    document.getElementById("ticketMedio").textContent = `R$ ${ticket.toFixed(2)}`;
+}
+calcularStats();
+
+/* ==============================
+   NAVEGAÇÃO SIDEBAR
+============================== */
+const titulos = {
+    agenda: "📅 Agenda do Dia",
+    agendamentos: "📋 Agendamentos",
+    fidelidade: "🏆 Fidelidade",
+    galeria: "📸 Galeria"
+};
+
+function abrirTab(id){
+    document.querySelectorAll(".secao").forEach(s=>s.classList.remove("ativa"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("ativo"));
+    document.getElementById("tab-"+id).classList.add("ativa");
+    event.currentTarget.classList.add("ativo");
+    document.getElementById("topbarTitulo").textContent = titulos[id];
+    fecharMenu();
+
+    if(id === "agendamentos") renderAgendamentos();
+    if(id === "fidelidade") renderFidelidade();
+    if(id === "galeria") carregarGaleria();
+    if(id === "agenda") renderAgenda();
+}
+
+/* ==============================
+   MENU MOBILE
+============================== */
+document.getElementById("menuToggle").addEventListener("click",()=>{
+    document.getElementById("sidebar").classList.toggle("aberto");
+    document.getElementById("overlay").classList.toggle("visivel");
+});
+
+function fecharMenu(){
+    document.getElementById("sidebar").classList.remove("aberto");
+    document.getElementById("overlay").classList.remove("visivel");
+}
+
+/* ==============================
+   AGENDA DO DIA
+============================== */
+function renderAgenda(){
+    const hojeStr = new Date().toISOString().split("T")[0];
+    const doHoje = agendamentos.filter(a=>a.data===hojeStr)
+        .sort((a,b)=>a.hora.localeCompare(b.hora));
+
+    const div = document.getElementById("agendaHoje");
+    const count = document.getElementById("agendaCount");
+
+    if(doHoje.length === 0){
+        count.textContent = "";
+        div.innerHTML = `
+            <div class="agenda-vazia">
+                <div class="icon-big">📭</div>
+                <p>Nenhum agendamento para hoje.</p>
+            </div>`;
+        return;
+    }
+
+    count.textContent = `${doHoje.length} agendamento${doHoje.length>1?"s":""}`;
+    div.innerHTML = doHoje.map(item=>`
+        <div class="agenda-card">
+            <div class="agenda-hora">${item.hora}</div>
+            <div class="agenda-detalhe">
+                <h3>${item.nome}</h3>
+                <div class="agenda-meta">
+                    <span class="agenda-servico-badge">${item.servico}</span>
+                    <span>🚗 ${item.veiculo}</span>
+                    <span>🔖 ${item.placa}</span>
+                    <span>📱 ${item.telefone}</span>
+                    <span style="color:var(--dourado)">💰 R$ ${Number(item.valor||0).toFixed(2)}</span>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+renderAgenda();
+
+/* ==============================
+   AGENDAMENTOS
+============================== */
+function renderAgendamentos(){
+    const busca = (document.getElementById("filtroNome")?.value||"").toLowerCase();
+    const servico = document.getElementById("filtroServico")?.value||"";
+
+    const filtrados = agendamentos.filter(a=>{
+        const matchBusca = !busca ||
+            a.nome.toLowerCase().includes(busca) ||
+            (a.placa||"").toLowerCase().includes(busca);
+        const matchServico = !servico || a.servico === servico;
+        return matchBusca && matchServico;
+    });
+
+    const lista = document.getElementById("listaAgendamentos");
+
+    if(filtrados.length === 0){
+        lista.innerHTML = `<div class="empty"><div class="e-icon">📭</div>Nenhum agendamento encontrado.</div>`;
+        return;
+    }
+
+    lista.innerHTML = filtrados.map((item, i)=>{
+        const idx = agendamentos.indexOf(item);
+        const dataFmt = item.data ? item.data.split("-").reverse().join("/") : "-";
+        return `
+        <div class="card-agendamento">
+            <div class="ag-info">
+                <h3>${item.nome}</h3>
+                <div class="ag-chips">
+                    <span class="chip">${item.servico}</span>
+                    <span class="chip chip-data">📅 ${dataFmt}</span>
+                    <span class="chip chip-hora">⏰ ${item.hora}</span>
+                    <span class="chip" style="background:rgba(200,169,126,.15);color:var(--dourado)">💰 R$ ${Number(item.valor||0).toFixed(2)}</span>
+                </div>
+                <div class="ag-contato">
+                    <span>🚗 ${item.veiculo}</span>
+                    <span>🔖 ${item.placa}</span>
+                    <span>📱 ${item.telefone}</span>
+                </div>
+            </div>
+            <div class="ag-acoes">
+                <button class="btn btn-primario" onclick="gerarRecibo(${idx})">📄 Recibo PDF</button>
+                <button class="btn btn-excluir" onclick="excluir(${idx})">🗑 Excluir</button>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+/* ==============================
+   EXCLUIR
+============================== */
+function excluir(idx){
+    if(!confirm("Excluir este agendamento?")) return;
+    agendamentos.splice(idx,1);
+    localStorage.setItem("agendamentos",JSON.stringify(agendamentos));
+    calcularStats();
+    renderAgendamentos();
+}
+
+/* ==============================
+   FIDELIDADE
+============================== */
+function renderFidelidade(){
+    const ranking = {};
+    agendamentos.forEach(a=>{
+        if(!ranking[a.telefone]){
+            ranking[a.telefone]={nome:a.nome,telefone:a.telefone,pontos:0,gasto:0};
+        }
+        ranking[a.telefone].pontos++;
+        ranking[a.telefone].gasto += Number(a.valor||0);
+    });
+
+    const sorted = Object.values(ranking).sort((a,b)=>b.pontos-a.pontos);
+    const medalhas = ["🥇","🥈","🥉"];
+    const div = document.getElementById("rankingClientes");
+
+    if(sorted.length === 0){
+        div.innerHTML = `<div class="empty"><div class="e-icon">🏆</div>Nenhum cliente no ranking ainda.</div>`;
+        return;
+    }
+
+    div.innerHTML = sorted.map((c,i)=>{
+        const pct = Math.min(100, (c.pontos/10)*100);
+        const gratis = c.pontos >= 10;
+        return `
+        <div class="ranking-card">
+            <div class="ranking-pos">${medalhas[i]||"#"+(i+1)}</div>
+            <div class="ranking-info">
+                <strong>${c.nome}</strong>
+                <p>📱 ${c.telefone} · Gasto total: R$ ${c.gasto.toFixed(2)}</p>
+                <div class="progresso-bar">
+                    <div class="progresso-fill" style="width:${pct}%"></div>
+                </div>
+            </div>
+            <div class="ranking-pontos">
+                <div class="pontos-num">${c.pontos}</div>
+                <div class="pontos-label">pontos</div>
+                ${gratis?`<span class="badge-gratis">🎁 Lavagem grátis!</span>`:`<span style="color:#444;font-size:11px">${10-c.pontos} p/ brinde</span>`}
+            </div>
+        </div>`;
+    }).join("");
+}
+
+/* ==============================
+   GALERIA
+============================== */
+function salvarFoto(input){
+    const arquivos = Array.from(input.files);
+    let processados = 0;
+
+    arquivos.forEach(arquivo=>{
+        const reader = new FileReader();
+        reader.onload = e=>{
+            galeria.push(e.target.result);
+            processados++;
+            if(processados === arquivos.length){
+                localStorage.setItem("galeria",JSON.stringify(galeria));
+                carregarGaleria();
+            }
+        };
+        reader.readAsDataURL(arquivo);
+    });
+}
+
+function carregarGaleria(){
+    const div = document.getElementById("galeriaAdmin");
+    if(galeria.length === 0){
+        div.innerHTML = `<div class="galeria-vazia"><div class="e-icon">🖼️</div><p style="color:#444;font-size:14px">Nenhuma foto adicionada ainda.</p></div>`;
+        return;
+    }
+    div.innerHTML = `<div class="galeria-grid">${galeria.map((foto,i)=>`
+        <div class="foto-card">
+            <img src="${foto}" alt="Foto ${i+1}">
+            <div class="foto-card-footer">
+                <span class="foto-num">Foto ${i+1}</span>
+                <button class="btn-excluir-foto" onclick="excluirFoto(${i})">🗑 Excluir</button>
+            </div>
+        </div>
+    `).join("")}</div>`;
+}
+
+function excluirFoto(i){
+    if(!confirm("Excluir esta foto?")) return;
+    galeria.splice(i,1);
+    localStorage.setItem("galeria",JSON.stringify(galeria));
+    carregarGaleria();
+}
+carregarGaleria();
+
+/* ==============================
+   DRAG & DROP na upload zone
+============================== */
+const uploadZone = document.getElementById("uploadZone");
+uploadZone.addEventListener("dragover",e=>{
+    e.preventDefault();
+    uploadZone.style.borderColor="var(--dourado)";
+});
+uploadZone.addEventListener("dragleave",()=>{
+    uploadZone.style.borderColor="rgba(200,169,126,.2)";
+});
+uploadZone.addEventListener("drop",e=>{
+    e.preventDefault();
+    uploadZone.style.borderColor="rgba(200,169,126,.2)";
+    const fakeInput = {files: e.dataTransfer.files};
+    salvarFoto(fakeInput);
+});
+
+/* ==============================
+   GERAR RECIBO PDF
+============================== */
+function gerarRecibo(idx){
+    const c = agendamentos[idx];
+    if(!c) return;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    pdf.setFillColor(8,8,8);
+    pdf.rect(0,0,210,297,"F");
+
+    pdf.setFontSize(22);
+    pdf.setTextColor(200,169,126);
+    pdf.text("LAVA JATO EXPRESS",20,28);
+
+    pdf.setFontSize(11);
+    pdf.setTextColor(160,140,110);
+    pdf.text("Recibo de Serviço",20,37);
+
+    pdf.setDrawColor(200,169,126);
+    pdf.setLineWidth(0.5);
+    pdf.line(20,42,190,42);
+
+    const campos = [
+        ["Cliente", c.nome],
+        ["Telefone", c.telefone],
+        ["Veículo", c.veiculo],
+        ["Placa", c.placa],
+        ["Serviço", c.servico],
+        ["Data", c.data ? c.data.split("-").reverse().join("/") : "-"],
+        ["Hora", c.hora],
+        ["Valor", `R$ ${Number(c.valor||0).toFixed(2)}`],
+    ];
+
+    let y = 56;
+    campos.forEach(([label,val])=>{
+        pdf.setFontSize(10);
+        pdf.setTextColor(120,100,70);
+        pdf.text(label+":", 20, y);
+        pdf.setFontSize(12);
+        pdf.setTextColor(232,220,196);
+        pdf.text(String(val||"-"), 65, y);
+        y += 14;
+    });
+
+    pdf.setFontSize(10);
+    pdf.setTextColor(80,70,50);
+    pdf.text("Gerado em "+new Date().toLocaleDateString("pt-BR"),20,280);
+
+    pdf.save(`recibo-${c.nome.replace(/\s+/g,"-")}.pdf`);
+}
+
+/* ==============================
+   LOGOUT
+============================== */
+function logout(){
+    localStorage.removeItem("logado");
+    window.location.href="login.html";
+}
+</script>
+let fotos =
+JSON.parse(localStorage.getItem("galeriaFotos")) || [];
+
+fotos.push(imagemBase64);
+
+localStorage.setItem(
+    "galeriaFotos",
+    JSON.stringify(fotos)
+);
+</body>
+</html>
